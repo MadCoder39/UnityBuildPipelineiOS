@@ -1,0 +1,2 @@
+recursive-include unity_build_pipeline/stubs *
+include requirements.txt
