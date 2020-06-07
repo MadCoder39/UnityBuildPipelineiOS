@@ -21,8 +21,17 @@ platform :ios do
   lane :beta do |options|
     apple_id = options[:username]
     username = options[:username]
+    get_certificates          
+    get_provisioning_profile
     last = latest_testflight_build_number(username: username)
     increment_build_number(build_number: last + 1)
+    update_project_team(
+      teamid: options[:teamid]
+    )
+    update_app_identifier(
+      plist_path: "Info.plist", # Path to info plist file, relative to xcodeproj
+      app_identifier: options[:appid] # The App Identifier
+    )
     build_app(scheme: "Unity-iPhone")
     upload_to_testflight
   end

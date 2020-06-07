@@ -8,13 +8,13 @@ with open('requirements.txt') as f:
 
 setuptools.setup(
     name="UnityBuildPipeline",
-    version="0.0.1",
+    version="0.0.4",
     author="MadCoder",
     author_email="madcoder39@gmail.com",
-    description="Unity build pipeline",
+    description="Unity build pipeline for iOS",
     long_description=long_description,
     long_description_content_type="text/markdown",
-    url="https://github.com/MadCoder39/UnityBuildPipeline",
+    url="https://github.com/MadCoder39/UnityBuildPipelineiOS",
     packages=setuptools.find_packages(),
     install_requires=required,
     scripts=['pipeline'],
@@ -22,6 +22,6 @@ setuptools.setup(
     classifiers=[
         "Programming Language :: Python :: 3",
         "License :: OSI Approved :: MIT License",
-        "Operating System :: OS Independent",
+        "Operating System :: MacOS",
     ],
 )

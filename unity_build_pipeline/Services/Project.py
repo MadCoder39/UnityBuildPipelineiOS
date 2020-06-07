@@ -20,6 +20,9 @@ class Project:
         self.backups_enabled = True
         self.build = {}
         self.commands = {}
+        self.username = ""
+        self.bundleID = ""
+        self.teamID = ""
         if load:
             self.load()
 
@@ -39,7 +42,7 @@ class Project:
         return self.get_config_folder(self.path) + '/stubs'
 
     @staticmethod
-    def factory(project_path, unity, xcode_project_path, use_backups):
+    def factory(project_path, unity, xcode_project_path, use_backups, username, bundle_id, team_id):
         project = Project(project_path, load=False)
         project.unity = unity
         project.build = {
@@ -48,21 +51,29 @@ class Project:
             }
         }
         project.backups_enabled = use_backups
+        project.username = username
+        project.bundleID = bundle_id
+        project.teamID = team_id
         project.commands = {}
         return project
 
     def load(self):
-        config = yaml.safe_load(open(Project.get_pipeline_path(self.path), 'r').read())
+        config = yaml.safe_load(
+            open(Project.get_pipeline_path(self.path), 'r').read())
         self.unity = Unity(config['unity']['version'], config['unity']['path'])
         self.build = {
             Project.BUILD_TYPE_XCODE: config['xcode_build']
         }
         self.backups_enabled = config['backups']
         self.commands = config['commands']
+        self.username = config['username']
+        self.bundleID = config['bundleID']
+        self.teamID = config['teamID']
 
     def save(self):
         if Project.is_initialized(self.path):
-            config = yaml.safe_load(open(Project.get_pipeline_path(self.path), 'r').read())
+            config = yaml.safe_load(
+                open(Project.get_pipeline_path(self.path), 'r').read())
         else:
             makedirs(self.get_config_folder(self.path))
             config = {}
@@ -75,9 +86,13 @@ class Project:
             'xcode_build': {
                 'path': self.get_export_path(Project.BUILD_TYPE_XCODE, absolute=False),
             },
-            'commands': self.commands
+            'commands': self.commands,
+            'username': self.username,
+            'bundleID': self.bundleID,
+            'teamID': self.teamID
         })
-        open(Project.get_pipeline_path(self.path), 'w').write(yaml.dump(config, default_flow_style=False))
+        open(Project.get_pipeline_path(self.path), 'w').write(
+            yaml.dump(config, default_flow_style=False))
 
     def drop(self):
         config_folder = Project.get_pipeline_path(self.path)
@@ -89,7 +104,8 @@ class Project:
         backup_path = self.get_export_path(build_type) + suffix
         if os.path.exists(self.get_export_path(build_type)):
             copy(self.get_export_path(build_type), backup_path)
-            color_print("Project has been backed up in %s" % backup_path, GREEN)
+            color_print("Project has been backed up in %s" %
+                        backup_path, GREEN)
             return backup_path
 
     def restore_from_backup(self, build_type, remove_backup=True, suffix=':backup'):
@@ -122,21 +138,27 @@ class Project:
         success = False
         try:
             if not self.unity.is_build_type_supported(build_type):
-                raise Exception("%s build is not supported by %s version of Unity" % (build_type, self.unity.version))
+                raise Exception("%s build is not supported by %s version of Unity" % (
+                    build_type, self.unity.version))
             color_print('Exporting %s project..' % build_type)
             export_path = self.get_export_path(build_type)
             log_file = export_path + '/export.log'
-            command = self._generate_export_command(allow_debugging, is_development, build_type, is_append_build)
+            command = self._generate_export_command(
+                allow_debugging, is_development, build_type, is_append_build)
             if command:
-                color_print("Please, be patient. You can follow log here %s\n" % log_file, YELLOW)
+                color_print(
+                    "Please, be patient. You can follow log here %s\n" % log_file, YELLOW)
                 success = self.unity.execute(
                     self.path,
-                    ["-batchmode", "-quit", "-executeMethod", command, "-logFile", log_file]
+                    ["-batchmode", "-quit", "-executeMethod",
+                        command, "-logFile", log_file]
                 )
                 if success:
-                    color_print("Project has been successfully exported!", GREEN)
+                    color_print(
+                        "Project has been successfully exported!", GREEN)
                 else:
-                    raise Exception("Unity export failed! Check logs here: %s" % log_file)
+                    raise Exception(
+                        "Unity export failed! Check logs here: %s" % log_file)
         finally:
             self._cleanup(build_type)
         return success
