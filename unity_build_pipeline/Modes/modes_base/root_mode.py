@@ -1,5 +1,6 @@
 import argparse
 
+from unity_build_pipeline.Modes.pipeline_modes.CleanMode import CleanEndpoint
 from unity_build_pipeline.Modes.pipeline_modes.RapidMode import RapidEndpoint
 from unity_build_pipeline.Modes.pipeline_modes.ExportMode import ExportEndpoint
 from unity_build_pipeline.Modes.pipeline_modes.FastlaneMode import FastlaneEndpoint
@@ -17,7 +18,8 @@ class Root(ParserNode):
         ExportEndpoint,
         FastlaneEndpoint,
         RunModeEndpoint,
-        RapidEndpoint
+        RapidEndpoint,
+        CleanEndpoint
     ]
 
     def __init__(self):

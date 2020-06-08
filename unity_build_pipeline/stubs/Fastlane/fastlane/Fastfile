@@ -21,6 +21,10 @@ platform :ios do
   lane :beta do |options|
     apple_id = options[:username]
     username = options[:username]
+    update_code_signing_settings(
+      use_automatic_signing: true,
+      path: "Unity-iPhone.xcodeproj"
+    )
     get_certificates          
     get_provisioning_profile
     last = latest_testflight_build_number(username: username)

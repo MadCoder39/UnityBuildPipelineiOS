@@ -25,11 +25,11 @@ pip3 uninstall UnityBuildPipeline
 ```
 
 ## Runall command 
-This command is taking care of everything, while you can sit back and enjoy your :coffee: 
+This command is taking care of everything, while you can sit back and enjoy your ☕ 
 It has lots of arguments because it combines all other commands. Most of them are optional. 
 
 Best way to use it is `pipeline runall beta`, where 'beta' is passed to fastlane command.
-
+One command to run them all...
 ```
 pipeline runall -h
 usage: pipeline runall [-h] [-f] [--allow-debugging] [--dev] [options [options ...]]
@@ -54,6 +54,16 @@ usage: pipeline init [-h] [-f]
 optional arguments:
   -h, --help    show this help message and exit
   -f, --force
+```
+
+## Clean command
+Clears the project folder from pipeline's output folders and files
+```
+pipeline clean -h
+usage: pipeline clean [-h]
+
+optional arguments:
+  -h, --help  show this help message and exit
 ```
 
 ## Export command
@@ -133,7 +143,11 @@ There are 2 types of arguments:
 1) Running such command will help avoiding retyping your credentials every time
 `fastlane fastlane-credentials add --username <your email>`
 2) Also this command will help to avoid retyping `export FASTLANE_USER=<your appleID>`
-2) In case during archive build Xcode throws error such as: "Please provide an auth token with USYM_UPLOAD_AUTH_TOKEN environment variable". It happens when using Unity Services in your game. Try using this command `export USYM_UPLOAD_AUTH_TOKEN="whatever"`
+3) In case during archive build Xcode throws error such as: "Please provide an auth token with USYM_UPLOAD_AUTH_TOKEN environment variable". It happens when using Unity Services in your game. Try using this command `export USYM_UPLOAD_AUTH_TOKEN="whatever"`
+4) First build requires some configuration, after that things will be automated given that the recommendations are followed.
+
+Good luck :)
+
 
 # License
 MIT

@@ -5,14 +5,16 @@ from unity_build_pipeline.Modes.modes_base.command import InitedCommand, BaseCom
 from unity_build_pipeline.Modes.pipeline_modes.InitMode import InitMode
 from unity_build_pipeline.Modes.pipeline_modes.ExportMode import ExportMode
 from unity_build_pipeline.Modes.pipeline_modes.FastlaneMode import FastlaneMode
+from unity_build_pipeline.Services.Project import Project
 from unity_build_pipeline.Support.logger import color_print, WHITE
 
 class RapidCommand(BaseCommand):
     def run(self):
         kwargs = self.kwargs
         start_time = time.time()
-        
-        InitMode(kwargs).start()
+
+        if not Project.is_initialized(self.project_path) or kwargs.get('force', False):
+            InitMode(kwargs).start()
         ExportMode(kwargs).start()
         FastlaneMode(kwargs).start()
 
@@ -27,7 +29,7 @@ class RapidEndpoint(ParserEndpoint):
 
     def configure_arg_parser(self, parent_subparsers):
         parser = parent_subparsers.add_parser(
-            name=self.parser_name, help='Run All Commands')
+            name=self.parser_name, help='One command to run them all')
         parser.add_argument('-f', '--force', action='store_true')
         parser.add_argument('options', nargs='*', help='fastlane options')
         parser.add_argument('--allow-debugging', action='store_true',

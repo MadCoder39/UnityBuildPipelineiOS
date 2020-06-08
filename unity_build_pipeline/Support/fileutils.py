@@ -4,6 +4,9 @@ import shutil
 from distutils.dir_util import copy_tree
 
 
+def get_parent_dir(directory):
+    return os.path.dirname(directory)
+
 def makedirs(path):
     try:
         os.makedirs(path)
