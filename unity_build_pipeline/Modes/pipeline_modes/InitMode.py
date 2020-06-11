@@ -42,17 +42,21 @@ class InitMode(BaseCommand):
             "Please, provide your appleID (email) for further usage by fastlane",
             example="kek@gmail.com",
             check_answer=lambda p: re.match(ptrn, p),
-            incorrect_answer=lambda p: "Email p %s is invalid" % p
+            incorrect_answer=lambda p: "Email %s is invalid" % p
         )
 
         bundleID = question(
             "Please, provide your app bundle id for further usage by fastlane",
-            example="com.default.test"
+            example="com.default.test",
+            check_answer=lambda p: len(p) >= 8,
+            incorrect_answer=lambda p: "Bundle ID %s is too short" % p
         )
 
         teamID = question(
             "Please, provide your apple team id for further usage by fastlane",
-            example="7NS7GL82HF"
+            example="7NS7GL82HF",
+            check_answer=lambda p: len(p) == 10,
+            incorrect_answer=lambda p: "Team ID %s should have 10 symbols, neither less nor more" % p
         )
 
         project = Project.factory(

@@ -8,7 +8,7 @@ with open('requirements.txt') as f:
 
 setuptools.setup(
     name="UnityBuildPipeline",
-    version="0.0.6",
+    version="0.0.8.1",
     author="MadCoder",
     author_email="madcoder39@gmail.com",
     description="Unity build pipeline for iOS",
